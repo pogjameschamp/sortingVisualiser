@@ -1,7 +1,7 @@
 import React from 'react';
 import './SortingVisualiser.css';
-import * as sortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js';
 import {getMergeSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
+import { bubbleSort } from '../SortingAlgorithms/bubbleSort.js';
 
 export default class SortingVisualiser extends React.Component {
     constructor(props) {
@@ -49,7 +49,34 @@ export default class SortingVisualiser extends React.Component {
       }
     }
 
-
+  bubbleSort(){
+    // const bubbleSortArray = bubbleSort(this.state.array);
+    // const botArray = this.state.array.slice().sort((a,b) => a - b)
+    // console.log(sortingHelper(bubbleSortArray, botArray))
+    console.log(this.state.array);
+    const animations = bubbleSort(this.state.array);
+    console.log(animations);
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar');
+      const isColorChange = i % 3 !== 2;
+      if (isColorChange) {
+        const [barOneId, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneId].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 3 === 0 ? 'red' : 'blue';
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * 1);
+      } else {
+        setTimeout(() => {
+          const [barOneId, newHeight] = animations[i];
+          const barOneStyle = arrayBars[barOneId].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * 1);
+      }
+    }
+  }
 
 
     render() {
