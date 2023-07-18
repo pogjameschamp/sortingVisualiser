@@ -19,7 +19,7 @@ export default class SortingVisualiser extends React.Component {
     resetArray() {
       const array = [];
       for (let i = 0; i < 20; i++) {
-        array.push(randomIntFromInterval(5, 100));
+        array.push(randomIntFromInterval(5, 20));
       }
       this.setState({array});
     }
@@ -31,20 +31,20 @@ export default class SortingVisualiser extends React.Component {
         const arrayBars = document.getElementsByClassName('array-bar');
         const isColorChange = i % 3 !== 2;
         if (isColorChange) {
-          const [barOneId, barTwoIdx] = animations[i];
+          const [barOneId, barTwoId] = animations[i];
           const barOneStyle = arrayBars[barOneId].style;
-          const barTwoStyle = arrayBars[barTwoIdx].style;
+          const barTwoStyle = arrayBars[barTwoId].style;
           const color = i % 3 === 0 ? 'red' : 'blue';
           setTimeout(() => {
             barOneStyle.backgroundColor = color;
             barTwoStyle.backgroundColor = color;
-          }, i * 1);
+          }, i * 500);
         } else {
           setTimeout(() => {
             const [barOneId, newHeight] = animations[i];
             const barOneStyle = arrayBars[barOneId].style;
             barOneStyle.height = `${newHeight}px`;
-          }, i * 1);
+          }, i * 500);
         }
       }
     }
@@ -53,7 +53,6 @@ export default class SortingVisualiser extends React.Component {
     // const bubbleSortArray = bubbleSort(this.state.array);
     // const botArray = this.state.array.slice().sort((a,b) => a - b)
     // console.log(sortingHelper(bubbleSortArray, botArray))
-    console.log(this.state.array);
     const animations = bubbleSort(this.state.array);
     console.log(animations);
     for (let i = 0; i < animations.length; i++) {
@@ -67,13 +66,27 @@ export default class SortingVisualiser extends React.Component {
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
-        }, i * 1);
+        }, i * 400);
       } else {
         setTimeout(() => {
-          const [barOneId, newHeight] = animations[i];
-          const barOneStyle = arrayBars[barOneId].style;
-          barOneStyle.height = `${newHeight}px`;
-        }, i * 1);
+          // temp = arr[j];
+          // arr[j] = arr[j + 1];
+          // arr[j + 1] = temp;
+          // const [barOneIdx, barTwoIdx] = animations[i];
+          // const barOneStyle = arrayBars[barOneId].style;
+          // const barTwoStyle = arrayBars[barTwoIdx].style;
+
+
+          const [barOneHeight, barTwoHeight] = animations[i];
+          // const barOneStyle = arrayBars[barOneId].style;
+          // const barTwoStyle = arrayBars[barTwoIdx].style;
+
+          const barOneStyle = arrayBars[barOneHeight].style;
+          const barTwoStyle = arrayBars[barTwoHeight].style;
+          barOneStyle.height = `${barOneHeight}px`;
+          barTwoStyle.height = `${barTwoHeight}px`;
+
+        }, i * 400);
       }
     }
   }
