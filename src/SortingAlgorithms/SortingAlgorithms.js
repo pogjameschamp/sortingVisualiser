@@ -1,77 +1,8 @@
-// // export const mergeSort = array => {
-// //     if(array.length === 1 ) {
-// //         return array;
-// //     }
-// //     const middleId = Math.floor(array.length / 2);
-// //     const firstHalf = mergeSort(array.slice(0, middleId));
-// //     const secondHalf = mergeSort(array.slice(middleId));
-// //     const sortedArray = [];
-// //     let i = 0, j=0;
+import SortingVisualiser from "../SortingVisualiser/SortingVisualiser";
+import {resetArray} from '../SortingVisualiser/SortingVisualiser.jsx'
 
-// //     while (i < firstHalf.length && j < secondHalf.length) {
-// //         if (firstHalf[i] < secondHalf[j]) {
-// //             sortedArray.push(firstHalf[i++]);
-// //         } else {
-// //             sortedArray.push(secondHalf[j++]);
-// //         }
-// //     }
+let ran = document.getElementsByClassName("reset")
 
-// //     while (i < firstHalf.length) {
-// //         sortedArray.push(firstHalf[i++]);
-// //     }
-// //     while (j < secondHalf.length) {
-// //         sortedArray.push(secondHalf[j++]);
-// //     }
-// //     return sortedArray;
-// // };
-
-// export function getMergeSortAnimations(array) {
-//     const animations = [];
-//     if (array.length <= 1) {
-//         return array;
-//     }
-//     const auxArray = array.slice();
-//     mergeSortHelper(array, 0, array.length - 1, auxArray, animations);
-//     return animations;
-// }
-
-// function mergeSortHelper(mainArray, startId, endId, auxArray, animations) {
-//     if (startId === endId) {
-//         return;
-//     }
-//     const middleId = Math.floor((startId + endId) / 2);
-//     mergeSortHelper(auxArray, startId, middleId, mainArray, animations);
-//     mergeSortHelper(auxArray, middleId + 1, endId, mainArray, animations);
-//     doMerge(mainArray, startId, middleId, endId, auxArray, animations);
-// }
-
-// function doMerge(mainArray, startId, middleId, endId, auxArray, animations) {
-//     let k = startId;
-//     let i = startId;
-//     let j = middleId + 1;
-//     while (i <= middleId && j <= endId) {
-//         const animation = {};
-//         animation.comparison = [i,j];
-//         if (auxArray[i] <= auxArray[j]) {
-//             animation.swap = [k, i];
-//             mainArray[k++] = auxArray[i++];
-//         } else {
-//             animation.swap = [k, j];
-//             mainArray[k++] = auxArray[j++];
-//         }
-//         animations.push(animation);
-//     }
-
-//     while (i <= middleId) {
-//         animations.push({comparison:[i,i], swap: [k,i]});
-//         mainArray[k++] = auxArray[j++];
-//     }
-
-//     while (j <= endId) {
-//         animations.push({comparison: [j,j], swap: [k,j]});
-//         mainArray[k++] = auxArray[j++];
-//     }
-// }
 
 export function getMergeSortAnimations(array) {
     const animations = [];
@@ -157,3 +88,42 @@ export function getMergeSortAnimations(array) {
       mainArray[k++] = auxiliaryArray[j++];
     }
   } 
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export async function bubbleSorter(array) {
+  // console.log("bubblesorting commence")
+  // if (SortingVisualiser.resetArray()) {
+  //   return;
+  // }
+  
+  const bars = document.getElementsByClassName('array-bar');
+
+  for (let i = 0; i < array.length; i++) {
+    for (let j = 0; j < array.length - i - 1; j++) {
+      if (array[j] > array[j+1]) {
+        for (let k = 0;k < bars.length;k++) {
+          if (k !== j && k !== j+1) {
+            bars[k].style.backgroundColor = "blue";
+          }
+        }
+        let temp = array[j];
+        array[j] = array[j+1];
+        array[j+1] = temp;
+        bars[j].style.height = array[j] + "px";
+        bars[j].style.backgroundColor = "lightgreen";
+        bars[j + 1].style.height = array[j + 1] + "px";
+        bars[j + 1].style.backgroundColor = "lightgreen";
+        await sleep(100);
+      }
+      bars[j].style.backgroundColor = "blue";
+      bars[j + 1].style.backgroundColor = "blue";
+    }
+    await sleep(100);
+  }
+  console.log("finished")
+  return array;
+}
+

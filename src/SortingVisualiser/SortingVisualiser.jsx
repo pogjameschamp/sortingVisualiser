@@ -2,6 +2,7 @@ import React from 'react';
 import './SortingVisualiser.css';
 import * as sortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js';
 import {getMergeSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
+import {bubbleSorter} from '../SortingAlgorithms/SortingAlgorithms.js';
 
 export default class SortingVisualiser extends React.Component {
     constructor(props) {
@@ -21,6 +22,10 @@ export default class SortingVisualiser extends React.Component {
       for (let i = 0; i < 20; i++) {
         array.push(randomIntFromInterval(5, 100));
       }
+      const bars = document.getElementsByClassName('array-bar');
+      for (let k = 0;k < bars.length;k++) {
+        bars[k].style.backgroundColor = "turqoise";
+      }
       this.setState({array});
     }
 
@@ -38,15 +43,20 @@ export default class SortingVisualiser extends React.Component {
           setTimeout(() => {
             barOneStyle.backgroundColor = color;
             barTwoStyle.backgroundColor = color;
-          }, i * 1);
+          }, i * 100);
         } else {
           setTimeout(() => {
             const [barOneId, newHeight] = animations[i];
             const barOneStyle = arrayBars[barOneId].style;
             barOneStyle.height = `${newHeight}px`;
-          }, i * 1);
+          }, i * 100);
         }
       }
+    }
+
+    bubbleSort() {
+      bubbleSorter(this.state.array);
+
     }
 
 
@@ -66,9 +76,11 @@ export default class SortingVisualiser extends React.Component {
                 height: `${value}px`,
               }}></div>
           ))}
-          <button onClick={() => this.resetArray()}>Generate New Array</button>
+          <div>
+          <button class = "reset" onClick={() => this.resetArray()}>Generate New Array</button>
           <button onClick={() => this.mergeSort()}>Merge Sort</button>
           <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+          </div>
         </div>
       );
     }
